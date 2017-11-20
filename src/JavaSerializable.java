@@ -1,9 +1,52 @@
-import java.io.Serializable;
+
+
+
+
+import sun.misc.IOUtils;
+
+import java.io.*;
 import java.util.Date;
 
 public class JavaSerializable {
+    public static void main (String[] args) throws IOException{
+        //java 序列化j
+        //Initializes The Object
+        User user = new User();
+        user.setName("hollis");
+        user.setGender("male");
+        user.setAge(23);
+        user.setBirthday(new Date());
+        System.out.println(user);
 
-    public static void main (String[] args){
+        //Write Obj to File
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(new FileOutputStream("tempFile"));
+            oos.writeObject(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           if(oos!=null){
+               oos.close();
+           }
+        }
+
+        //java 反序列化
+        //Read Obj from File
+        File file = new File("tempFile");
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(new FileInputStream(file));
+            User newUser = (User) ois.readObject();
+            System.out.println(newUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(ois!=null){
+                ois.close();
+            }
+
+        }
 
     }
 }
